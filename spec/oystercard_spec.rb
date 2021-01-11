@@ -2,6 +2,9 @@ require 'oystercard'
 
 describe Oystercard do
 
+  min_balance = Oystercard::MINBALANCE
+  max_balance = Oystercard::MAXBALANCE
+
   it "has a balance of 0 upon initialization" do
     expect(subject.balance).to equal(0)
   end
@@ -12,7 +15,6 @@ describe Oystercard do
     end
 
     it "has a top up limit of 90" do
-      max_balance = Oystercard::MAXBALANCE
       subject.top_up(1)
     expect{ subject.top_up(max_balance) }.to raise_error "exceeds top up limit of #{max_balance}"
     end
@@ -25,33 +27,31 @@ describe Oystercard do
   end
 
   describe "#touch_in" do
+
     it "can be touched in" do
-      min_balance = Oystercard::MINBALANCE
       subject.top_up(min_balance)
       subject.touch_in
       expect(subject).to be_in_journey
     end
 
     it "raises an error if a card is touched in without a minimum balance" do 
-      min_balance = Oystercard::MINBALANCE
       expect{ subject.touch_in }.to raise_error "must top up card with minimum balance of #{min_balance} first"
     end
   end
 
   describe "#touch_out" do
-    it "can be touched out" do
-      min_balance = Oystercard::MINBALANCE
+
+    before(:each) do
       subject.top_up(min_balance)
       subject.touch_in
       subject.touch_out
+    end
+
+    it "can be touched out" do
       expect(subject).not_to be_in_journey
     end
 
     it "deducts the minimum fare when touched out" do
-      min_balance = Oystercard::MINBALANCE
-      subject.top_up(min_balance)
-      subject.touch_in
-      subject.touch_out
       expect{ subject.touch_out }.to change{ subject.balance }.by(-Oystercard::MINBALANCE)
     end 
   end
