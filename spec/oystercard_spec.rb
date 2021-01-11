@@ -18,13 +18,6 @@ describe Oystercard do
     end
   end
 
-  describe "#deduct" do
-    it "can deduct amount from the balance" do
-
-      expect { subject.deduct(10) }.to change { subject.balance }.by(-10)
-    end
-  end
-
   describe "#in_journey?" do
     it "expects a card to not be in journey upon initialization" do
       expect(subject).not_to be_in_journey
