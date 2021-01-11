@@ -39,21 +39,20 @@ describe Oystercard do
   end
 
   describe "#touch_out" do
-  it "can be touched out" do
-    min_balance = Oystercard::MINBALANCE
-    subject.top_up(min_balance)
-    subject.touch_in
-    subject.touch_out
-    expect(subject).not_to be_in_journey
+    it "can be touched out" do
+      min_balance = Oystercard::MINBALANCE
+      subject.top_up(min_balance)
+      subject.touch_in
+      subject.touch_out
+      expect(subject).not_to be_in_journey
+    end
+
+    it "deducts the minimum fare when touched out" do
+      min_balance = Oystercard::MINBALANCE
+      subject.top_up(min_balance)
+      subject.touch_in
+      subject.touch_out
+      expect{ subject.touch_out }.to change{ subject.balance }.by(-Oystercard::MINBALANCE)
+    end 
   end
-
-  it "deducts the minimum fare when touched out" do
-  min_balance = Oystercard::MINBALANCE
-  subject.top_up(min_balance)
-  subject.touch_in
-  subject.touch_out
-  expect(subject.balance).to eq(0)
-end
-
-end
 end
