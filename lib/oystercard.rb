@@ -24,6 +24,7 @@ class Oystercard
   end
 
   def touch_in
+    raise "must top up card with minimum balance first" if balance <  1
     @in_journey = true
   end
 
