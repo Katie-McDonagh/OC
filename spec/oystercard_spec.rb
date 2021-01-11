@@ -33,6 +33,7 @@ describe Oystercard do
 
   describe "#touch_in" do
     it "can be touched in" do
+      subject.top_up(1)
       subject.touch_in
       expect(subject).to be_in_journey
     end
@@ -44,6 +45,7 @@ describe Oystercard do
 
   describe "#touch_out" do
   it "can be touched out" do
+    subject.top_up(1)
     subject.touch_in
     subject.touch_out
     expect(subject).not_to be_in_journey
