@@ -27,15 +27,22 @@ describe Oystercard do
   end
 
   describe "#touch_in" do
-
+  let(:entry_station) { double :entry_station }
     it "can be touched in" do
       subject.top_up(min_balance)
-      subject.touch_in
+      subject.touch_in("hakney")
       expect(subject).to be_in_journey
     end
 
     it "raises an error if a card is touched in without a minimum balance" do 
-      expect{ subject.touch_in }.to raise_error "must top up card with minimum balance of #{min_balance} first"
+      expect{ subject.touch_in("hackney") }.to raise_error "must top up card with minimum balance of #{min_balance} first"
+    end
+
+    it "remembers the entry station the card was touched in at" do
+
+      subject.top_up(min_balance)
+      subject.touch_in("hackney")
+      expect(subject.entry_station).to eq("hackney")
     end
   end
 
@@ -43,7 +50,7 @@ describe Oystercard do
 
     before(:each) do
       subject.top_up(min_balance)
-      subject.touch_in
+      subject.touch_in("hackney")
       subject.touch_out
     end
 
