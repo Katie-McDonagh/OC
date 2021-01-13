@@ -28,6 +28,7 @@ class Oystercard
 
   def touch_in(station)
     @entry_station = station
+    @journeys[:entry_station] = station
     raise "must top up card with minimum balance of #{MINBALANCE} first" if balance <  MINBALANCE
   end
 

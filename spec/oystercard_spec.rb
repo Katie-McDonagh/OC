@@ -6,6 +6,7 @@ describe Oystercard do
   max_balance = Oystercard::MAXBALANCE
   let(:entry_station) { double :station }
   let(:exit_station) { double :station }
+  let(:journeys){ {entry_station: entry_station} }
 
 
   it "has a balance of 0 upon initialization" do
@@ -33,7 +34,7 @@ describe Oystercard do
 
     before(:each) do
       subject.top_up(min_balance)
-      subject.touch_in("hackney")
+      subject.touch_in(entry_station)
     end
     it "can be touched in" do
       expect(subject).to be_in_journey
@@ -41,11 +42,15 @@ describe Oystercard do
 
     it "raises an error if a card is touched in without a minimum balance" do 
       subject.touch_out(exit_station)
-      expect{ subject.touch_in("hackney") }.to raise_error "must top up card with minimum balance of #{min_balance} first"
+      expect{ subject.touch_in(entry_station) }.to raise_error "must top up card with minimum balance of #{min_balance} first"
     end
 
     it "remembers the entry station the card was touched in at" do
-      expect(subject.entry_station).to eq("hackney")
+      expect(subject.entry_station).to eq(entry_station)
+    end
+
+    it "stores the entry station within the journeys hash" do
+      expect(subject.journeys).to include(journeys)
     end
   end
 
