@@ -34,6 +34,7 @@ class Oystercard
 
   def touch_out(station)
     deduct(MINBALANCE)
+    @journeys[:exit_station] = station
     @entry_station = nil
     @exit_station = station
   end

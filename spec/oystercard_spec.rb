@@ -6,7 +6,7 @@ describe Oystercard do
   max_balance = Oystercard::MAXBALANCE
   let(:entry_station) { double :station }
   let(:exit_station) { double :station }
-  let(:journeys){ {entry_station: entry_station} }
+  let(:journeys){ {entry_station: entry_station, exit_station: exit_station} }
 
 
   it "has a balance of 0 upon initialization" do
@@ -48,10 +48,6 @@ describe Oystercard do
     it "remembers the entry station the card was touched in at" do
       expect(subject.entry_station).to eq(entry_station)
     end
-
-    it "stores the entry station within the journeys hash" do
-      expect(subject.journeys).to include(journeys)
-    end
   end
 
   describe "#touch_out" do
@@ -82,6 +78,13 @@ describe Oystercard do
   describe "#journeys" do
     it "starts with an empty jouney hash" do
       expect(subject.journeys).to be_empty
+    end
+
+    it "stores an entry station and exit station for the journey" do
+      subject.top_up(min_balance)
+      subject.touch_in(entry_station)
+      subject.touch_out(exit_station)
+      expect(subject.journeys).to include journeys
     end
 
   end
