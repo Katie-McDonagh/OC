@@ -68,5 +68,9 @@ describe Oystercard do
     it "forgets the entry station once touched out" do
       expect(subject.entry_station).to eq(nil)
     end
+
+    it "stores the exit station" do
+      expect(subject.exit_station).to eq("Liverpool Street")
+    end
   end
 end
