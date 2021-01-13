@@ -4,7 +4,9 @@ describe Oystercard do
 
   min_balance = Oystercard::MINBALANCE
   max_balance = Oystercard::MAXBALANCE
-  let(:station) { double :station }
+  let(:entry_station) { double :station }
+  let(:exit_station) { double :station }
+
 
   it "has a balance of 0 upon initialization" do
     expect(subject.balance).to equal(0)
@@ -38,12 +40,12 @@ describe Oystercard do
     end
 
     it "raises an error if a card is touched in without a minimum balance" do 
-      subject.touch_out
+      subject.touch_out(exit_station)
       expect{ subject.touch_in("hackney") }.to raise_error "must top up card with minimum balance of #{min_balance} first"
     end
 
     it "remembers the entry station the card was touched in at" do
-      expect(subject.station).to eq("hackney")
+      expect(subject.entry_station).to eq("hackney")
     end
   end
 
@@ -52,7 +54,7 @@ describe Oystercard do
     before(:each) do
       subject.top_up(min_balance)
       subject.touch_in("hackney")
-      subject.touch_out
+      subject.touch_out("Liverpool Street")
     end
 
     it "can be touched out" do
@@ -60,11 +62,11 @@ describe Oystercard do
     end
 
     it "deducts the minimum fare when touched out" do
-      expect{ subject.touch_out }.to change{ subject.balance }.by(-Oystercard::MINBALANCE)
+      expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by(-Oystercard::MINBALANCE)
     end 
 
     it "forgets the entry station once touched out" do
-      expect(subject.station).to eq(nil)
+      expect(subject.entry_station).to eq(nil)
     end
   end
 end
