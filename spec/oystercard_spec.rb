@@ -4,6 +4,7 @@ describe Oystercard do
 
   min_balance = Oystercard::MINBALANCE
   max_balance = Oystercard::MAXBALANCE
+  let(:station) { double :station }
 
   it "has a balance of 0 upon initialization" do
     expect(subject.balance).to equal(0)
@@ -27,7 +28,6 @@ describe Oystercard do
   end
 
   describe "#touch_in" do
-  let(:entry_station) { double :entry_station }
     it "can be touched in" do
       subject.top_up(min_balance)
       subject.touch_in("hakney")
@@ -42,7 +42,7 @@ describe Oystercard do
 
       subject.top_up(min_balance)
       subject.touch_in("hackney")
-      expect(subject.entry_station).to eq("hackney")
+      expect(subject.station).to eq("hackney")
     end
   end
 
@@ -63,7 +63,7 @@ describe Oystercard do
     end 
 
     it "forgets the entry station once touched out" do
-      expect(subject.entry_station).to eq(nil)
+      expect(subject.station).to eq(nil)
     end
   end
 end
