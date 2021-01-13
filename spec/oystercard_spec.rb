@@ -73,4 +73,11 @@ describe Oystercard do
       expect(subject.exit_station).to eq("Liverpool Street")
     end
   end
+
+  describe "#journeys" do
+    it "starts with an empty jouney hash" do
+      expect(subject.journeys).to be_empty
+    end
+
+  end
 end
