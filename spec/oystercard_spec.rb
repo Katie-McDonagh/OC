@@ -61,5 +61,9 @@ describe Oystercard do
     it "deducts the minimum fare when touched out" do
       expect{ subject.touch_out }.to change{ subject.balance }.by(-Oystercard::MINBALANCE)
     end 
+
+    it "forgets the entry station once touched out" do
+      expect(subject.entry_station).to eq(nil)
+    end
   end
 end

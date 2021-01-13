@@ -34,6 +34,7 @@ class Oystercard
   def touch_out
     deduct(MINBALANCE)
     @in_journey = false
+    @entry_station = nil
   end
 
   private
